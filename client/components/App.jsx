@@ -1,7 +1,7 @@
 // LEGEND: ??? = explore further
 
 import React, { useRef, useEffect } from 'react';
-import { Waveform, File, Button, Form, PlayerDiv } from './styled-components.jsx';
+import { Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker } from './styled-components.jsx';
 
 const App = () => {
   window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
@@ -121,7 +121,7 @@ const App = () => {
       let URLObj = window.URL || window.webkitURL;
       let a = document.createElement("a");
       a.href = URLObj.createObjectURL(blob);
-      a.download = "download.png";
+      a.download = "download.png"; // FILENAME TO BE USED
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -134,21 +134,26 @@ const App = () => {
 
     return (
       <>
-          <File type="file" id="file" accept="audio/*" onChange={loadFile} onSubmit={urlSubmit}></File>
+        <FilePicker>
+            <File type="file" id="file" accept="audio/*" onChange={loadFile} onSubmit={urlSubmit}></File>
+        </FilePicker>
           <Form onChange={urlChange} onSubmit={urlSubmit}>
             URL to Audio File&nbsp;
             <File type="text" id="url"></File>
-            <Button onClick={() => {drawAudio(song); loadSong();}}>RENDER</Button>
+            <RenderBtn onClick={() => {drawAudio(song); loadSong();}}>RENDER</RenderBtn>
           </Form>
-        <div id="canvas">
+        <CanvasBG id="canvas">
           <Waveform id="waveform" onClick={download}></Waveform>
-        </div>
-        <Button onClick={download}>Download Waveform</Button>
-        <PlayerDiv>
-          <audio controls ref={(ref) => {setAudioref(ref)}}>
-            <source src={song}></source>
-          </audio>
-        </PlayerDiv>
+        </CanvasBG>
+        <Line>
+        {/* <Button onClick={download}>Download Waveform</Button> */}
+        <Download onClick={download}>Download Snapshot</Download>
+          <PlayerDiv>
+            <Audio controls ref={(ref) => {setAudioref(ref)}}>
+              <source src={song}></source>
+            </Audio>
+          </PlayerDiv>
+        </Line>
       </>
     );
 }
