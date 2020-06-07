@@ -143,7 +143,7 @@ const App = () => {
             <RenderBtn onClick={() => {drawAudio(song); loadSong();}}>RENDER</RenderBtn>
           </Form>
         <CanvasBG id="canvas">
-          <Waveform id="waveform" onClick={download}></Waveform>
+          <Waveform id="waveform"></Waveform>
         </CanvasBG>
         <Line>
         {/* <Button onClick={download}>Download Waveform</Button> */}
