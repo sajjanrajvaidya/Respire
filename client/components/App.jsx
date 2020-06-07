@@ -128,6 +128,11 @@ const App = () => {
     })
   };
 
+  const render = () => {
+    drawAudio(song);
+    loadSong();
+  };
+
   useEffect(() => {
     drawAudio(song);
   }, []);
@@ -140,7 +145,7 @@ const App = () => {
           <Form onChange={urlChange} onSubmit={urlSubmit}>
             URL to Audio File&nbsp;
             <File type="text" id="url"></File>
-            <RenderBtn onClick={() => {drawAudio(song); loadSong();}}>RENDER</RenderBtn>
+            <RenderBtn onClick={render}>RENDER</RenderBtn>
           </Form>
         <CanvasBG id="canvas">
           <Waveform id="waveform"></Waveform>

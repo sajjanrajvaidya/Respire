@@ -8,7 +8,9 @@ export const Waveform = styles.canvas`
   margin: 2rem auto;
 `;
 
-export const File = styles.input``;
+export const File = styles.input`
+  width: 30vw;
+`;
 
 export const FilePicker = styles.div`
   margin: 0rem 1rem 0rem 1rem;
@@ -35,6 +37,7 @@ export const PlayerDiv = styles.div`
 export const Audio = styles.audio`
   display: inline-grid;
   height: 1.5rem;
+  width: 50vw;
 `;
 
 export const Line = styles.div`
