@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style>
+      body {
+        background: #282831;
+      }
+
+      canvas {
+          width: 800px;
+          height: 130px;
+          margin: 2rem auto;
+      }
+    </style>
   </head>
   <body>
-    <div id="App">
-      <div id="mp3_player">
-        <div id="audio_box"></div>
-        <canvas id="analyser_render"></canvas>
-      </div>
-    </div>
-    <script src="dist/bundle.js"></script>
+    <span id="test">TEST THIS OUT</span>
+    <canvas></canvas>
+    <audio controls>
+    <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/shoptalk-clip.mp3" type="audio/mp3">
+    </audio>
+    <!-- <div id="App">
+    </div> -->
+    <!-- <script src="dist/bundle.js"></script> -->
   </body>
+  <script src="plain.js"></script>
 </html>

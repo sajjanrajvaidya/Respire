@@ -1,11 +1,6 @@
-// LEGEND: ??? = explore further
-
-import React from 'react';
-
-const App = () => {
-  window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
+window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
   const audioContext = new AudioContext();
-  let currentBuffer = null;
+  // let currentBuffer = null;
 
   const drawAudio = (url) => {
     fetch(url)
@@ -27,7 +22,7 @@ const App = () => {
 
   const filterData = (audioBuffer) => {
     const rawData = audioBuffer.getChannelData(0); // flatten audio to 1 channel
-    const samples = 100; // desired number of samples in final data set
+    const samples = 70; // desired number of samples in final data set
     const blockSize = Math.floor(rawData.length / samples); // number of samples in each sub-division
     const filteredData = [];
     for (let i = 0; i < samples; i++) {
@@ -38,7 +33,6 @@ const App = () => {
       }
       filteredData.push(sum / blockSize); // to get average for size of each data in sample
     };
-
     return filteredData;
   }
 
@@ -50,13 +44,13 @@ const App = () => {
   };
 
   //<< DRAW THE LINES BASED ON OUR DATA >>//
-  const draw = normalizeData => () => {
+  const draw = normalizeData => {
     const canvas = document.querySelector("canvas"); // Allows to draw graphics into HTML <canvas> element
     const dpr = window.devicePixelRatio || 1; // check's browser's pixel ratio (basically screen resolution) to draw according to size
     const padding = 20;
-    canvas.width = canvas.offsetWidth * pdr;
+    canvas.width = canvas.offsetWidth * dpr;
     canvas.height = (canvas.offsetHeight + padding * 2) * dpr; // ???
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     ctx.scale(dpr, dpr); // ???
     ctx.translate(0, canvas.offsetHeight / 2 + padding); // Set Y = 0 to be in the middle of the canvas
 
@@ -68,30 +62,23 @@ const App = () => {
       if (height < 0) {
         height = 0;
       } else if (height > canvas.offsetHeight / 2) {
-        height = canvas.offsetHeight / 2; // may need change
+        height = height > canvas.offsetHeight / 2; // may need change
       }
       drawLineSegment(ctx, x, height, width, (i + 1) % 2);
     }
   };
 
-  const drawLineSegment = (ctx, x, y, width, isEven) => {
+  const drawLineSegment = (ctx, x, height, width, isEven) => {
     ctx.lineWidth = 1; // thickness of line
-    ctx.strokeStyle = '#fff'; // color of line
+    ctx.strokeStyle = "#fff"; // color of line
     ctx.beginPath();
-    y = isEven? y: -y; // ???
+    height = isEven? height: -height; // ???
                        // keep me mind the negative value of y
     ctx.moveTo(x, 0); // moveTo move without drawing
-    ctx.lineTo(x, y); // lineTo move while drawing
-    ctx.arc(x + width / 2, y, width /2, Math.PI, 0, isEven); // ???
+    ctx.lineTo(x, height); // lineTo move while drawing
+    ctx.arc(x + width / 2, height, width /2, Math.PI, 0, isEven); // ???
     ctx.lineTo(x + width, 0);
     ctx.stroke();
   };
 
-    return (
-      <div>
-        <button onClick={() => {console.log('hey!'); return drawAudio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/shoptalk-clip.mp3')}}>RENDER</button>
-      </div>
-    );
-}
-
-export default App;
+  drawAudio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/shoptalk-clip.mp3');
