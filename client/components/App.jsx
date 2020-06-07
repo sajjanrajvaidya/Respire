@@ -1,7 +1,7 @@
 // LEGEND: ??? = explore further
 
-import React, { useRef } from 'react';
-import { Waveform, File, Button, Form } from './styled-components.jsx';
+import React, { useRef, useEffect } from 'react';
+import { Waveform, File, Button, Form, PlayerDiv } from './styled-components.jsx';
 
 const App = () => {
   window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
@@ -80,7 +80,7 @@ const App = () => {
 
   const drawLineSegment = (ctx, x, height, width, isEven) => {
     ctx.lineWidth = 1; // thickness of line
-    ctx.strokeStyle = '#131317'; // color of line
+    ctx.strokeStyle = '#2b6d67'; // color of line
     ctx.beginPath();
     height = isEven? height: -height; // ???
                        // keep me mind the negative value of y
@@ -104,31 +104,51 @@ const App = () => {
 
   const urlSubmit = (e) => {
     e.preventDefault();
-    setSong(urlInput);
+    if (urlInput !== '') {
+      setSong(urlInput);
+    }
   };
 
   const loadSong = () => {
     audioRef.load();
-    console.log(audioRef);
   };
+
+  const download = (e) => {
+    var canvas = document.getElementById('waveform');
+    // var png = image.toDataURL("image/png");
+    // document.write('<img src="' + png + '"/>');
+    canvas.toBlob((blob) => { // NATIVE HTML5
+      let URLObj = window.URL || window.webkitURL;
+      let a = document.createElement("a");
+      a.href = URLObj.createObjectURL(blob);
+      a.download = "download.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    })
+  };
+
+  useEffect(() => {
+    drawAudio(song);
+  }, []);
 
     return (
       <>
-        <div>
           <File type="file" id="file" accept="audio/*" onChange={loadFile} onSubmit={urlSubmit}></File>
           <Form onChange={urlChange} onSubmit={urlSubmit}>
             URL to Audio File&nbsp;
             <File type="text" id="url"></File>
-            <Button>Submit</Button>
-          </Form>
             <Button onClick={() => {drawAudio(song); loadSong();}}>RENDER</Button>
-        </div>
+          </Form>
         <div id="canvas">
-            <Waveform id="waveform"></Waveform>
+          <Waveform id="waveform" onClick={download}></Waveform>
         </div>
-        <audio controls ref={(i) => {setAudioref(i)}}>
-          <source src={song}></source>
-        </audio>
+        <Button onClick={download}>Download Waveform</Button>
+        <PlayerDiv>
+          <audio controls ref={(ref) => {setAudioref(ref)}}>
+            <source src={song}></source>
+          </audio>
+        </PlayerDiv>
       </>
     );
 }
