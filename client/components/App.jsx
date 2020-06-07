@@ -1,14 +1,19 @@
 // LEGEND: ??? = explore further
 
-import React from 'react';
+import React, { useRef } from 'react';
+import { Waveform, File, Button, Form } from './styled-components.jsx';
 
 const App = () => {
   window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
   const audioContext = new AudioContext();
-  let currentBuffer = null;
+  // let currentBuffer = null;
+
+  const [song, setSong] = React.useState('./samples/sleepless.mp3');
+  const [urlInput, setUrlinput] = React.useState('');
+  const [audioRef, setAudioref] = React.useState('');
 
   const drawAudio = (url) => {
-    fetch(url)
+    fetch(url) // Using axios requires defining content-type and stringifying the data
       .then(response => response.arrayBuffer())
       .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
       .then(audioBuffer => draw(normalizeData(filterData(audioBuffer))))
@@ -27,7 +32,7 @@ const App = () => {
 
   const filterData = (audioBuffer) => {
     const rawData = audioBuffer.getChannelData(0); // flatten audio to 1 channel
-    const samples = 100; // desired number of samples in final data set
+    const samples = 10000; // desired number of samples in final data set
     const blockSize = Math.floor(rawData.length / samples); // number of samples in each sub-division
     const filteredData = [];
     for (let i = 0; i < samples; i++) {
@@ -38,7 +43,6 @@ const App = () => {
       }
       filteredData.push(sum / blockSize); // to get average for size of each data in sample
     };
-
     return filteredData;
   }
 
@@ -50,13 +54,13 @@ const App = () => {
   };
 
   //<< DRAW THE LINES BASED ON OUR DATA >>//
-  const draw = normalizeData => () => {
-    const canvas = document.querySelector("canvas"); // Allows to draw graphics into HTML <canvas> element
+  const draw = normalizeData => {
+    const canvas = document.getElementById("waveform"); // Allows to draw graphics into HTML <canvas> element
     const dpr = window.devicePixelRatio || 1; // check's browser's pixel ratio (basically screen resolution) to draw according to size
     const padding = 20;
-    canvas.width = canvas.offsetWidth * pdr;
+    canvas.width = canvas.offsetWidth * dpr;
     canvas.height = (canvas.offsetHeight + padding * 2) * dpr; // ???
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     ctx.scale(dpr, dpr); // ???
     ctx.translate(0, canvas.offsetHeight / 2 + padding); // Set Y = 0 to be in the middle of the canvas
 
@@ -68,29 +72,64 @@ const App = () => {
       if (height < 0) {
         height = 0;
       } else if (height > canvas.offsetHeight / 2) {
-        height = canvas.offsetHeight / 2; // may need change
+        height = height > canvas.offsetHeight / 2; // may need change
       }
       drawLineSegment(ctx, x, height, width, (i + 1) % 2);
     }
   };
 
-  const drawLineSegment = (ctx, x, y, width, isEven) => {
+  const drawLineSegment = (ctx, x, height, width, isEven) => {
     ctx.lineWidth = 1; // thickness of line
-    ctx.strokeStyle = '#fff'; // color of line
+    ctx.strokeStyle = '#131317'; // color of line
     ctx.beginPath();
-    y = isEven? y: -y; // ???
+    height = isEven? height: -height; // ???
                        // keep me mind the negative value of y
     ctx.moveTo(x, 0); // moveTo move without drawing
-    ctx.lineTo(x, y); // lineTo move while drawing
-    ctx.arc(x + width / 2, y, width /2, Math.PI, 0, isEven); // ???
+    ctx.lineTo(x, height); // lineTo move while drawing
+    ctx.arc(x + width / 2, height, width / 2, Math.PI, 0, isEven); // ???
     ctx.lineTo(x + width, 0);
     ctx.stroke();
   };
 
+  const loadFile = () => {
+    const file = document.getElementById('file').files[0];
+    const objectUrl = URL.createObjectURL(file);
+    setSong(objectUrl);
+  };
+
+  const urlChange = (e) => {
+    e.preventDefault();
+    setUrlinput(e.target.value);
+  };
+
+  const urlSubmit = (e) => {
+    e.preventDefault();
+    setSong(urlInput);
+  };
+
+  const loadSong = () => {
+    audioRef.load();
+    console.log(audioRef);
+  };
+
     return (
-      <div>
-        <button onClick={() => {console.log('hey!'); return drawAudio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/shoptalk-clip.mp3')}}>RENDER</button>
-      </div>
+      <>
+        <div>
+          <File type="file" id="file" accept="audio/*" onChange={loadFile} onSubmit={urlSubmit}></File>
+          <Form onChange={urlChange} onSubmit={urlSubmit}>
+            URL to Audio File&nbsp;
+            <File type="text" id="url"></File>
+            <Button>Submit</Button>
+          </Form>
+            <Button onClick={() => {drawAudio(song); loadSong();}}>RENDER</Button>
+        </div>
+        <div id="canvas">
+            <Waveform id="waveform"></Waveform>
+        </div>
+        <audio controls ref={(i) => {setAudioref(i)}}>
+          <source src={song}></source>
+        </audio>
+      </>
     );
 }
 

@@ -1,4 +1,4 @@
-window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
+  window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
   const audioContext = new AudioContext();
   // let currentBuffer = null;
 
@@ -22,7 +22,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext; // webki
 
   const filterData = (audioBuffer) => {
     const rawData = audioBuffer.getChannelData(0); // flatten audio to 1 channel
-    const samples = 70; // desired number of samples in final data set
+    const samples = 10000; // desired number of samples in final data set
     const blockSize = Math.floor(rawData.length / samples); // number of samples in each sub-division
     const filteredData = [];
     for (let i = 0; i < samples; i++) {
@@ -76,9 +76,18 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext; // webki
                        // keep me mind the negative value of y
     ctx.moveTo(x, 0); // moveTo move without drawing
     ctx.lineTo(x, height); // lineTo move while drawing
-    ctx.arc(x + width / 2, height, width /2, Math.PI, 0, isEven); // ???
+    ctx.arc(x + width / 2, height, width / 2, Math.PI, 0, isEven); // ???
     ctx.lineTo(x + width, 0);
     ctx.stroke();
   };
 
-  drawAudio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/shoptalk-clip.mp3');
+  var song = './samples/sleepless.mp3';
+
+  var x = document.createElement("AUDIO");
+  x.setAttribute("controls", "controls");
+  x.setAttribute("src",song);
+  x.setAttribute("type", "audio/mp3");
+
+  document.getElementById('test').appendChild(x);
+  drawAudio(song);
+  // drawAudio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/shoptalk-clip.mp3');
