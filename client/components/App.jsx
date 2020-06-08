@@ -134,6 +134,10 @@ const App = () => {
     loadSong();
   };
 
+  const searchArtist = (artist) => {
+    console.log("Search artist: ", artist);
+  }
+
   useEffect(() => {
     drawAudio(song);
   }, []);
@@ -160,7 +164,7 @@ const App = () => {
             </Audio>
           </PlayerDiv>
         </Line>
-        <Reference />
+        <Reference searchArtist={searchArtist}/>
       </>
     );
 }

@@ -51,3 +51,11 @@ export const CanvasBG = styles.div`
   margin: 0.5rem 1rem;
   box-sizing: content-box;
 `;
+
+export const ReferenceDiv = styles.div`
+  padding: 1rem 1rem;
+`;
+
+export const ContentDiv = styles.div`
+  padding: 0rem 1rem 1rem;
+`;
