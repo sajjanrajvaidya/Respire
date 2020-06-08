@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker } from './styled-components.jsx';
+import Reference from './Reference.jsx';
 
 const App = () => {
   window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
@@ -159,6 +160,7 @@ const App = () => {
             </Audio>
           </PlayerDiv>
         </Line>
+        <Reference />
       </>
     );
 }
