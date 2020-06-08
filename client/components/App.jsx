@@ -1,6 +1,7 @@
 // LEGEND: ??? = explore further
 
 import React, { useRef, useEffect } from 'react';
+import axios from 'axios';
 import { Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker } from './styled-components.jsx';
 import Reference from './Reference.jsx';
 
@@ -135,7 +136,15 @@ const App = () => {
   };
 
   const searchArtist = (artist) => {
-    console.log("Search artist: ", artist);
+    axios.get('/getArtist', {
+      params: {
+        name: artist,
+      }
+    })
+    .then(data => {
+      console.log(data);
+    })
+    .catch(err => console.error('An error occured', err)); // remove err
   }
 
   useEffect(() => {
@@ -156,7 +165,6 @@ const App = () => {
           <Waveform id="waveform"></Waveform>
         </CanvasBG>
         <Line>
-        {/* <Button onClick={download}>Download Waveform</Button> */}
         <Download onClick={download}>Download Snapshot</Download>
           <PlayerDiv>
             <Audio controls ref={(ref) => {setAudioref(ref)}}>

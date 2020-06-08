@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-// const routes = require('./routes');
 
 const port = 8080;
 
@@ -17,6 +16,12 @@ app
   })
 
 router.get('/getArtist', (req, res) => {
-  console.log('Hit!');
+  const { name } = req.query;
+
+
+
+
+
+
   res.end();
 })
