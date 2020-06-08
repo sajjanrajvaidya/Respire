@@ -40,6 +40,17 @@ export const Audio = styles.audio`
   width: 50vw;
 `;
 
+export const PreviewAudio = styles.audio`
+  display: inline;
+  height: 1.5rem;
+  width: 50vw;
+`;
+
+export const Preview = styles.div`
+  display: flex;
+  justify-content: center;
+`;
+
 export const Line = styles.div`
   display: inline-flex;
   padding-left: 1rem;
@@ -72,4 +83,16 @@ export const ResultsDiv = styles.div`
 export const Thumbnail = styles.img`
   width: 10rem;
   height: 10rem;
+`;
+
+export const Tracklist = styles.div`
+  padding: 1rem 1rem;
+`;
+
+export const Highlight = styles.span`
+  font-weight: 700;
+`;
+
+export const Focus = styles.h3`
+  padding: 0rem 1rem;
 `;
