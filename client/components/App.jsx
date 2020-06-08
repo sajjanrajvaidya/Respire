@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker } from './styled-components.jsx';
 import Search from './Search.jsx';
 import Results from './Results.jsx';
+import Content from './Content.jsx';
 
 const App = () => {
   window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
@@ -15,6 +16,7 @@ const App = () => {
   const [urlInput, setUrlinput] = useState('');
   const [audioRef, setAudioref] = useState('');
   const [showResults, setShowResults] = useState(false);
+  const [showContent, setShowContent] = useState(false);
   const [content, setContent] = useState([]);
   const [results, setResults] = useState([]);
 
@@ -141,7 +143,7 @@ const App = () => {
   };
 
   const searchArtist = (artist) => {
-    axios.get('/getArtist', {
+    axios.get('/searchArtist', {
       params: {
         name: artist,
       }
@@ -150,8 +152,22 @@ const App = () => {
       setResults(data.data);
       setShowResults(true);
     })
-    .catch(err => console.error('An error occured', err)); // remove err
+    .catch(err => console.error('An error occured'));
   }
+
+  const loadTracks = (artistId) => {
+    setShowResults(false);
+    axios.get('/loadTracks', {
+      params: {
+        id: artistId,
+      }
+    })
+    .then(res => {
+      setContent(res.data.tracks);
+      setShowContent(true);
+    })
+    .catch(err => console.error('An error occured', err)); // remove err
+  };
 
   useEffect(() => {
     drawAudio(song);
@@ -179,7 +195,8 @@ const App = () => {
           </PlayerDiv>
         </Line>
         <Search searchArtist={searchArtist}/>
-        {(showResults)? <Results results={results}/> :''}
+        {(showResults)? <Results results={results} loadTracks={loadTracks}/> :''}
+        {(showContent)? <Content tracks={content}/>:''}
       </>
     );
 }

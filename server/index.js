@@ -17,7 +17,7 @@ app
     console.log(`Server is listening on port: ${ port }`);
   })
 
-router.get('/getArtist', (req, res) => {
+router.get('/searchArtist', (req, res) => {
   const { name } = req.query;
 
   // AN AXIOS REQUEST WITH HEADERS AND PARAMS
@@ -32,7 +32,25 @@ router.get('/getArtist', (req, res) => {
   })
   .then(data => res.send(data.data.artists.items.slice(0, 3)))
   .catch((err) => {
+    console.error('An error occured');
+    res.send(400);
+  });
+})
+
+router.get('/loadTracks', (req, res) => {
+  const { id } = req.query;
+
+  axios.get(`https://api.spotify.com/v1/artists/${id}/top-tracks`, {
+    headers: {
+      'Authorization': config.auth,
+    },
+    params: {
+      country: 'US',
+    }
+  })
+  .then(data => res.send(data.data))
+  .catch((err) => {
     console.error('An error occured', err);
     res.send(400);
-  }); // remove err from response
+  });
 })

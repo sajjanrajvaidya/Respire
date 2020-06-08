@@ -66,6 +66,7 @@ export const ContentDiv = styles.div`
 
 export const ResultsDiv = styles.div`
   padding: 1rem 1rem;
+  cursor: pointer;
 `;
 
 export const Thumbnail = styles.img`
