@@ -1,9 +1,10 @@
 // LEGEND: ??? = explore further
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker } from './styled-components.jsx';
-import Reference from './Reference.jsx';
+import Search from './Search.jsx';
+import Results from './Results.jsx';
 
 const App = () => {
   window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
@@ -11,8 +12,12 @@ const App = () => {
   // let currentBuffer = null;
 
   const [song, setSong] = React.useState('./samples/sleepless.mp3');
-  const [urlInput, setUrlinput] = React.useState('');
-  const [audioRef, setAudioref] = React.useState('');
+  const [urlInput, setUrlinput] = useState('');
+  const [audioRef, setAudioref] = useState('');
+  const [showResults, setShowResults] = useState(false);
+  const [content, setContent] = useState([]);
+  const [results, setResults] = useState([]);
+
 
   const drawAudio = (url) => {
     fetch(url) // Using axios requires defining content-type and stringifying the data
@@ -142,7 +147,8 @@ const App = () => {
       }
     })
     .then(data => {
-      console.log(data);
+      setResults(data.data);
+      setShowResults(true);
     })
     .catch(err => console.error('An error occured', err)); // remove err
   }
@@ -172,7 +178,8 @@ const App = () => {
             </Audio>
           </PlayerDiv>
         </Line>
-        <Reference searchArtist={searchArtist}/>
+        <Search searchArtist={searchArtist}/>
+        {(showResults)? <Results results={results}/> :''}
       </>
     );
 }

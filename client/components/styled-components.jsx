@@ -56,6 +56,19 @@ export const ReferenceDiv = styles.div`
   padding: 1rem 1rem;
 `;
 
+export const SearchDiv = styles.div`
+  padding: 1rem 1rem;
+`;
+
 export const ContentDiv = styles.div`
   padding: 0rem 1rem 1rem;
+`;
+
+export const ResultsDiv = styles.div`
+  padding: 1rem 1rem;
+`;
+
+export const Thumbnail = styles.img`
+  width: 10rem;
+  height: 10rem;
 `;

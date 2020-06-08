@@ -19,15 +19,8 @@ app
 
 router.get('/getArtist', (req, res) => {
   const { name } = req.query;
-  // const config = {
-  //   method: 'get',
-  //   url: `https://api.spotify.com/v1/search?q=${name}&type=artist`,
-  //   headers: {
-  //     'Authorization': config.auth,
-  //   },
-  // };
 
-  // axios.get(`https://api.spotify.com/v1/search?q=${name}&type=artist`, {
+  // AN AXIOS REQUEST WITH HEADERS AND PARAMS
   axios.get('https://api.spotify.com/v1/search', {
     headers: {
       'Authorization': config.auth,
