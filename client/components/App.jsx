@@ -6,6 +6,7 @@ import { Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, Rende
 import Search from './Search.jsx';
 import Results from './Results.jsx';
 import Content from './Content.jsx';
+import Spotiphy from './Spotiphy.jsx';
 
 const App = () => {
   window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
@@ -197,6 +198,7 @@ const App = () => {
         <Search searchArtist={searchArtist}/>
         {(showResults)? <Results results={results} loadTracks={loadTracks}/> :''}
         {(showContent)? <Content tracks={content}/>:''}
+        <Spotiphy />
       </>
     );
 }

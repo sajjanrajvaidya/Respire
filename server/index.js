@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const axios = require('axios');
-const config = require('./config');
+const config = require('../config');
 
 const port = 8080;
 
