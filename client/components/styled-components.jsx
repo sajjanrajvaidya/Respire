@@ -1,5 +1,11 @@
 import React from 'react';
-import styles from 'styled-components';
+import styles, { createGlobalStyle } from 'styled-components';
+
+export const GlobalStyle = createGlobalStyle`
+  body {
+  font-family: Arial, Helvetica, sans-serif;
+  }
+`;
 
 export const Waveform = styles.canvas`
   display: inline-grid;
@@ -55,6 +61,8 @@ export const Line = styles.div`
   display: inline-flex;
   padding-left: 1rem;
   padding-right: 1rem;
+  padding-bottom: 1.5rem;
+  width: 100%;
 `;
 
 export const CanvasBG = styles.div`
@@ -68,7 +76,7 @@ export const ReferenceDiv = styles.div`
 `;
 
 export const SearchDiv = styles.div`
-  padding: 1rem 1rem;
+  padding: 1rem 1rem 0rem;
 `;
 
 export const ContentDiv = styles.div`
@@ -76,7 +84,6 @@ export const ContentDiv = styles.div`
 `;
 
 export const ResultsDiv = styles.div`
-  padding: 1rem 0rem;
   cursor: pointer;
   display: inline-flex;
 `;
@@ -87,7 +94,7 @@ export const Thumbnail = styles.img`
 `;
 
 export const Tracklist = styles.div`
-  padding: 1rem 1rem;
+  padding: 0rem 1rem;
 `;
 
 export const Highlight = styles.span`
@@ -110,4 +117,22 @@ export const ButtonsDock = styles.div`
 
 export const FullSongMessage = styles.div`
   padding: 0.5rem 0rem;
+`;
+
+export const RefHeader = styles.div`
+  font-size: 2em;
+  color: ghostwhite;
+  background: #18a092;
+  width: 98%;
+  margin-left: 1rem;
+  display: inline-grid;
+  justify-items: center;
+`;
+
+export const ResultListItem = styles.div`
+  height: 1.25rem;
+  &:hover {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
 `;

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Line, Preview, PreviewAudio, Tracklist, Highlight, Focus } from './styled-components.jsx';
+import { Line, Preview, PreviewAudio, Tracklist, Highlight, Focus, ResultListItem } from './styled-components.jsx';
 
 const Content = (props) => {
   const { tracks, setUri } = props;
@@ -19,7 +19,7 @@ const Content = (props) => {
       <Tracklist>
       {tracks.map((track) => {
           console.log(track);
-          return <><span key={track.id} style={{cursor: 'pointer'}} onClick={()=>{loadSong(track); setUri(track.uri)}}>{track.name}</span><br/></>;
+          return <><ResultListItem key={track.id} style={{cursor: 'pointer'}} onClick={()=>{loadSong(track); setUri(track.uri)}}>{track.name}</ResultListItem><br/></>;
       })}
       </Tracklist>
         <Preview>

@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker } from './styled-components.jsx';
+import { GlobalStyle, Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker, RefHeader } from './styled-components.jsx';
 import Search from './Search.jsx';
 import Results from './Results.jsx';
 import Content from './Content.jsx';
@@ -170,6 +170,7 @@ const App = () => {
 
     return (
       <>
+      <GlobalStyle />
         <FilePicker>
             <File type="file" id="file" accept="audio/*" onChange={loadFile} onSubmit={urlSubmit}></File>
         </FilePicker>
@@ -189,10 +190,11 @@ const App = () => {
             </Audio>
           </PlayerDiv>
         </Line>
+        <RefHeader>REFERENCE</RefHeader>
         <Search searchArtist={searchArtist}/>
         {(showResults)? <Results results={results} loadTracks={loadTracks}/> :''}
         {(showContent)? <Content tracks={content} setUri={setUri}/>:''}
-        <Spotiphy song={uri} />
+        <Spotiphy id="spotiphy" song={uri} />
       </>
     );
 }
