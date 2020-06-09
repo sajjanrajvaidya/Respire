@@ -104,3 +104,6 @@ dist
 .tern-port
 
 *.mp3
+config.js
+SDKTest.js
+test.html
