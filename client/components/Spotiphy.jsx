@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const songUri = 'spotify:track:12b3bKEbdjtL1Ga0n3ybzK';
 let device = '';
+let position = null;
 
 const Spotiphy = () => {
 
@@ -41,11 +42,9 @@ const Spotiphy = () => {
     player.addListener('ready', ({ device_id }) => { // addListener returns an object
       console.log('Ready with Device ID', device_id);
       device = device_id;
-      // play(device_id, auth, songUri); // PLAY ON READY
     });
 
-    // MORE ERROR HANDLING
-    // Not Ready
+    // Not Ready; MORE ERROR HANDLING
     player.addListener('not_ready', ({ device_id }) => {
       console.log('Device ID has gone offline', device_id);
     });
@@ -69,6 +68,32 @@ const pauseSong = () => {
   .catch(err => console.error('An error occured'));
 };
 
+const seek = () => {
+  position = (position)? position += 30000: 30000;
+  axios.put(`https://api.spotify.com/v1/me/player/seek?device_id=${device}`,{}, {
+    params: {
+      position_ms: position,
+    },
+    headers: {
+      Authorization: `Bearer ${auth}`,
+    }
+  })
+  .catch(err => console.error('An error occured'));
+};
+
+const rewind = () => {
+  position = (position > 0)? ((position >= 30000)? position -= 30000: 0): 0;
+  axios.put(`https://api.spotify.com/v1/me/player/seek?device_id=${device}`,{}, {
+    params: {
+      position_ms: position,
+    },
+    headers: {
+      Authorization: `Bearer ${auth}`,
+    }
+  })
+  .catch(err => console.error('An error occured'));
+};
+
   return (
     <>
     <Script url="https://sdk.scdn.co/spotify-player.js"
@@ -78,6 +103,8 @@ const pauseSong = () => {
     />
     <button onClick={playSong}>Play</button>
     <button onClick={pauseSong}>Pause</button>
+    <button onClick={seek}>Seek Forward</button>
+    <button onClick={rewind}>Rewind</button>
     </>
   );
 };

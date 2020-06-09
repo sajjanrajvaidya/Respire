@@ -23,7 +23,9 @@ const App = () => {
 
 
   const drawAudio = (url) => {
-    fetch(url) // Using axios requires defining content-type and stringifying the data
+    // HAVE TO USE FETCH IN THIS CASE
+    // Using axios requires defining content-type and stringifying the data
+    fetch(url)
       .then(response => response.arrayBuffer())
       .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
       .then(audioBuffer => draw(normalizeData(filterData(audioBuffer))))
@@ -31,14 +33,6 @@ const App = () => {
         console.error('An error occured');
       })
   };
-
-  // // SKELETON OF VISUALIZE AUDIO
-  // const visualizeAudio = (url) => {
-  //   fetch(url)
-  //     .then(response => response.arrayBuffer())
-  //     .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-  //     .then(audioBuffer => visualize(audioBuffer));
-  // };
 
   const filterData = (audioBuffer) => {
     const rawData = audioBuffer.getChannelData(0); // flatten audio to 1 channel
