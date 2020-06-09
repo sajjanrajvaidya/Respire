@@ -76,8 +76,9 @@ export const ContentDiv = styles.div`
 `;
 
 export const ResultsDiv = styles.div`
-  padding: 1rem 1rem;
+  padding: 1rem 0rem;
   cursor: pointer;
+  display: inline-flex;
 `;
 
 export const Thumbnail = styles.img`
@@ -95,4 +96,18 @@ export const Highlight = styles.span`
 
 export const Focus = styles.h3`
   padding: 0rem 1rem;
+`;
+
+export const Result = styles.div`
+  padding: 1rem 1rem;
+  width: 50%;
+  cursor: pointer;
+`;
+
+export const ButtonsDock = styles.div`
+  padding: 0rem 1rem;
+`;
+
+export const FullSongMessage = styles.div`
+  padding: 0.5rem 0rem;
 `;

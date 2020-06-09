@@ -20,7 +20,7 @@ const App = () => {
   const [showContent, setShowContent] = useState(false);
   const [content, setContent] = useState([]);
   const [results, setResults] = useState([]);
-
+  const [uri, setUri] = useState('spotify:track:12b3bKEbdjtL1Ga0n3ybzK');
 
   const drawAudio = (url) => {
     // HAVE TO USE FETCH IN THIS CASE
@@ -191,8 +191,8 @@ const App = () => {
         </Line>
         <Search searchArtist={searchArtist}/>
         {(showResults)? <Results results={results} loadTracks={loadTracks}/> :''}
-        {(showContent)? <Content tracks={content}/>:''}
-        <Spotiphy />
+        {(showContent)? <Content tracks={content} setUri={setUri}/>:''}
+        <Spotiphy song={uri} />
       </>
     );
 }

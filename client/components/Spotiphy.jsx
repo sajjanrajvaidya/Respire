@@ -3,12 +3,16 @@ const auth = require('../../config.js').auth;
 import React from 'react';
 import Script from 'react-load-script'; // HELPS CREATE A SCRIPT TAG ONTO INDEX.HTML"
 import axios from 'axios';
+import { ButtonsDock, FullSongMessage } from './styled-components.jsx';
 
-const songUri = 'spotify:track:12b3bKEbdjtL1Ga0n3ybzK';
+let songUri = 'spotify:track:12b3bKEbdjtL1Ga0n3ybzK';
 let device = '';
 let position = null;
 
-const Spotiphy = () => {
+const Spotiphy = ({ song }) => {
+  if (song !== undefined) {
+    songUri = song;
+  }
 
   const play = (device_id, auth, uri) => {
     fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
@@ -101,10 +105,15 @@ const rewind = () => {
         onLoad={loadPlayer}
         onError={(err) => console.error('Could not connect to Spotify', err)} // remove err
     />
-    <button onClick={playSong}>Play</button>
-    <button onClick={pauseSong}>Pause</button>
-    <button onClick={seek}>Seek Forward</button>
-    <button onClick={rewind}>Rewind</button>
+
+
+    <ButtonsDock>
+      <FullSongMessage id="full-song-message">Play Full Track</FullSongMessage>
+      <button onClick={playSong}>Play</button>
+      <button onClick={pauseSong}>Pause</button>
+      <button onClick={seek}>Seek Forward</button>
+      <button onClick={rewind}>Rewind</button>
+    </ButtonsDock>
     </>
   );
 };
