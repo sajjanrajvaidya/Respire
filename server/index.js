@@ -23,7 +23,7 @@ router.get('/searchArtist', (req, res) => {
   // AN AXIOS REQUEST WITH HEADERS AND PARAMS
   axios.get('https://api.spotify.com/v1/search', {
     headers: {
-      'Authorization': config.auth,
+      'Authorization': `Bearer ${config.auth}`,
     },
     params: {
       q: name,
@@ -42,7 +42,7 @@ router.get('/loadTracks', (req, res) => {
 
   axios.get(`https://api.spotify.com/v1/artists/${id}/top-tracks`, {
     headers: {
-      'Authorization': config.auth,
+      'Authorization': `Bearer ${config.auth}`,
     },
     params: {
       country: 'US',

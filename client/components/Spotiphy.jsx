@@ -2,8 +2,10 @@
 const auth = require('../../config.js').auth;
 import React from 'react';
 import Script from 'react-load-script'; // HELPS CREATE A SCRIPT TAG ONTO INDEX.HTML"
+import axios from 'axios';
 
 const songUri = 'spotify:track:12b3bKEbdjtL1Ga0n3ybzK';
+let device = '';
 
 const Spotiphy = () => {
 
@@ -22,7 +24,8 @@ const Spotiphy = () => {
   window.onSpotifyWebPlaybackSDKReady = () => {
     const player = new Spotify.Player({ // WHAT IS THIS DOING?
       name: 'Web Playback SDK Quick Start Player',
-      getOAuthToken: cb => { cb(auth); }
+      getOAuthToken: cb => { cb(auth); },
+      volume: 0.5,
     });
 
     // Error handling
@@ -35,9 +38,10 @@ const Spotiphy = () => {
     player.addListener('player_state_changed', state => { console.log(state); });
 
     // Ready
-    player.addListener('ready', ({ device_id }) => {
+    player.addListener('ready', ({ device_id }) => { // addListener returns an object
       console.log('Ready with Device ID', device_id);
-      play(device_id, auth, songUri); // PLAY ON READY
+      device = device_id;
+      // play(device_id, auth, songUri); // PLAY ON READY
     });
 
     // MORE ERROR HANDLING
@@ -51,8 +55,18 @@ const Spotiphy = () => {
   }
 };
 
-const stop = () => {
-  console.log(Spotify.Player.pause());
+
+const playSong = () => {
+  play(device, auth, songUri);
+};
+
+const pauseSong = () => {
+  axios.put(`https://api.spotify.com/v1/me/player/pause?device_id=${device}`, {}, {
+    headers: {
+      Authorization: `Bearer ${auth}`,
+    }
+  })
+  .catch(err => console.error('An error occured'));
 };
 
   return (
@@ -62,7 +76,8 @@ const stop = () => {
         onLoad={loadPlayer}
         onError={(err) => console.error('Could not connect to Spotify', err)} // remove err
     />
-    <button onClick={stop}>STOP</button>
+    <button onClick={playSong}>Play</button>
+    <button onClick={pauseSong}>Pause</button>
     </>
   );
 };
