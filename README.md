@@ -18,7 +18,13 @@ npm start
 Once started, server will be running at `http://localhost:8080/`
 
 ## Demo
+Render audio waveform images from audio files locally or remotely
+
 ![Local](https://github.com/sajjanrajvaidya/mvp/blob/master/Respire%20Local%20Render%20GIF-downsized_large.gif)
+
+Stream reference tracks from Spotify for referencing your mix or master track
+
+![Spotify_I](https://github.com/sajjanrajvaidya/mvp/blob/master/Spotify%20Integration%20Phase%20I%20GIF-downsized_large.gif)
 
 ## Built With
 * [React](https://reactjs.org/) - Front-end Web Environment
