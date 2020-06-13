@@ -3,12 +3,12 @@ Music referencing app with an audio waveform analyzer and Spotify SDK integratio
 
 ## Getting Started
 
-Installing
-npm install -g webpack webpack-cli
+### Installation
+```
 npm install
+```
 
-## Running
-
+### Running
 ```
 npm run build
 npm start
@@ -16,7 +16,7 @@ npm start
 
 Once started, server will be running at `http://localhost:8080/`
 
-### FUTURE BUILDS:
+#### Future Builds:
 1. Dynamic Resume
 2. Auto-token generation
 3. Cross DOM player synchronization
