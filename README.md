@@ -27,3 +27,6 @@ Once started, server will be running at `http://localhost:8080/`
 * Dynamic Resume
 * Auto-token generation
 * Cross DOM player synchronization
+
+## Author
+[sajjanrajvaidya](https://github.com/sajjanrajvaidya)
