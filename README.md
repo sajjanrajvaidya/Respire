@@ -17,6 +17,9 @@ npm start
 
 Once started, server will be running at `http://localhost:8080/`
 
+## Demo
+![Local](https://github.com/sajjanrajvaidya/mvp/blob/master/Respire%20Local%20Render%20GIF-downsized_large.gif)
+
 ## Built With
 * [React](https://reactjs.org/) - Front-end Web Environment
 * [Styled-Components](https://styled-components.com/) - Component Level Styles
