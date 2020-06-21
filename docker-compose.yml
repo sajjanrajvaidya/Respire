@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  app:
+    build: .
+    image: checkthisout
+    command: sh -c "npm start"
+    ports:
+      - 8080:8080
