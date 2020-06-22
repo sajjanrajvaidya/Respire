@@ -7,7 +7,6 @@ const config = require('../config');
 const { id, secret, redirect } = config;
 //
 var request = require('request'); // "Request" library
-var cors = require('cors');
 var querystring = require('querystring'); // note #1
 var cookieParser = require('cookie-parser');
 
@@ -23,7 +22,6 @@ app
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
   .use(express.static(path.join(__dirname, '../public')))
-  .use(cors())
   .use(cookieParser())
   .use('/', router)
   .listen(port, () => {
