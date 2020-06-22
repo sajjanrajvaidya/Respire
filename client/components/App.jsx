@@ -170,34 +170,54 @@ const App = () => {
     drawAudio(song);
   }, []);
 
+  const getHashParams = () => {
+    const hashParams = {};
+    let e; const r = /([^&;=]+)=?([^&;]*)/g;
+    const q = window.location.hash.substring(1);
+    while (e = r.exec(q)) {
+      hashParams[e[1]] = decodeURIComponent(e[2]);
+    }
+    return hashParams;
+  };
+
+  const params = getHashParams();
+  const {
+    access_token, refresh_token, login, error,
+  } = params;
+
+  // console.log(params);
+
   return (
-    <>
-      <GlobalStyle />
-      <FilePicker>
-        <File type="file" id="file" accept="audio/*" onChange={loadFile} onSubmit={urlSubmit} />
-      </FilePicker>
-      <Form onChange={urlChange} onSubmit={urlSubmit}>
-        URL to Audio File&nbsp;
-        <File type="text" id="url" />
-        <RenderBtn onClick={render}>RENDER</RenderBtn>
-      </Form>
-      <CanvasBG id="canvas">
-        <Waveform id="waveform" />
-      </CanvasBG>
-      <Line>
-        <Download onClick={download}>Download Snapshot</Download>
-        <PlayerDiv>
-          <Audio controls ref={(ref) => { setAudioref(ref); }}>
-            <source src={song} />
-          </Audio>
-        </PlayerDiv>
-      </Line>
-      <RefHeader>REFERENCE</RefHeader>
-      <Search searchArtist={searchArtist} />
-      {(showResults) ? <Results results={results} loadTracks={loadTracks} /> : ''}
-      {(showContent) ? <Content tracks={content} setUri={setUri} /> : ''}
-      <Spotiphy id="spotiphy" song={uri} />
-    </>
+    (!login) ? (<a href="/login">LOGIN TO SPOTIFY</a>)
+      : (
+        <>
+          <GlobalStyle />
+          <FilePicker>
+            <File type="file" id="file" accept="audio/*" onChange={loadFile} onSubmit={urlSubmit} />
+          </FilePicker>
+          <Form onChange={urlChange} onSubmit={urlSubmit}>
+            URL to Audio File&nbsp;
+            <File type="text" id="url" />
+            <RenderBtn onClick={render}>RENDER</RenderBtn>
+          </Form>
+          <CanvasBG id="canvas">
+            <Waveform id="waveform" />
+          </CanvasBG>
+          <Line>
+            <Download onClick={download}>Download Snapshot</Download>
+            <PlayerDiv>
+              <Audio controls ref={(ref) => { setAudioref(ref); }}>
+                <source src={song} />
+              </Audio>
+            </PlayerDiv>
+          </Line>
+          <RefHeader>REFERENCE</RefHeader>
+          <Search searchArtist={searchArtist} />
+          {(showResults) ? <Results results={results} loadTracks={loadTracks} /> : ''}
+          {(showContent) ? <Content tracks={content} setUri={setUri} /> : ''}
+          <Spotiphy id="spotiphy" song={uri} />
+        </>
+      )
   );
 };
 

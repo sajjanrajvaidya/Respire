@@ -27,5 +27,6 @@ module.exports = {
     'camelcase': 0,
     'react/prop-types': 0,
     'react/button-has-type': 0,
+    'no-cond-assign': 0,
   },
 };
