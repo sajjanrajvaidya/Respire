@@ -106,6 +106,7 @@ const rewind = () => {
         onError={(err) => console.error('Could not connect to Spotify', err)} // remove err
     />
 
+    <a href="/login">LOG IN</a>
 
     <ButtonsDock>
       <FullSongMessage id="full-song-message">Play Full Track</FullSongMessage>
