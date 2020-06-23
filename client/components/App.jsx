@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 // LEGEND: ??? = explore further
 
 import React, { useEffect, useState } from 'react';
@@ -14,8 +15,8 @@ import Spotiphy from './Spotiphy.jsx';
 const App = () => {
   window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
   const audioContext = new AudioContext();
-  // let currentBuffer = null;
 
+  const [init, setInit] = useState(true);
   const [song, setSong] = useState('./samples/sleepless.mp3');
   const [urlInput, setUrlinput] = useState('');
   const [audioRef, setAudioref] = useState('');
@@ -79,6 +80,7 @@ const App = () => {
 
   const render = () => {
     drawAudio(song, audioContext);
+    setInit(false);
     loadSong();
   };
 
@@ -112,7 +114,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    drawAudio(song, audioContext);
+    // drawAudio(song, audioContext);
   }, []);
 
   return (
@@ -128,9 +130,12 @@ const App = () => {
             <File type="text" id="url" />
             <RenderBtn onClick={render}>RENDER</RenderBtn>
           </Form>
-          <CanvasBG id="canvas">
-            <Waveform id="waveform" />
-          </CanvasBG>
+          {(init) ? (<img src="dummy-wave.png" style={{ padding: '0.45rem 1rem .1rem 1rem' }} />)
+            : (
+              <CanvasBG id="canvas">
+                <Waveform id="waveform" />
+              </CanvasBG>
+            )}
           <Line>
             <Download onClick={download}>Download Snapshot</Download>
             <PlayerDiv>
@@ -143,7 +148,7 @@ const App = () => {
           <Search searchArtist={searchArtist} />
           {(showResults) ? <Results results={results} loadTracks={loadTracks} /> : ''}
           {(showContent) ? <Content tracks={content} setUri={setUri} /> : ''}
-          <Spotiphy id="spotiphy" song={uri} access_token={access_token} refresh_token={refresh_token}/>
+          <Spotiphy id="spotiphy" song={uri} access_token={access_token} refresh_token={refresh_token} />
         </>
       )
   );
