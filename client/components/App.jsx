@@ -139,9 +139,11 @@ const App = () => {
           <Line>
             <Download onClick={download}>Download Snapshot</Download>
             <PlayerDiv>
-              <Audio controls ref={(ref) => { setAudioref(ref); }}>
-                <source src={song} />
-              </Audio>
+              {(init) ? <Audio controls /> : (
+                <Audio controls ref={(ref) => { setAudioref(ref); }}>
+                  <source src={song} />
+                </Audio>
+              )}
             </PlayerDiv>
           </Line>
           <RefHeader>REFERENCE</RefHeader>
