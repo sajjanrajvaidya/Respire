@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { ResultsDiv, Thumbnail, Result } from './styled-components.jsx';
 
 const Results = (props) => {

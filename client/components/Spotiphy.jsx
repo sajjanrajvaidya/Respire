@@ -17,6 +17,7 @@ const Spotiphy = ({ song, access_token, refresh_token }) => {
     songUri = song;
   }
 
+  // eslint-disable-next-line no-shadow
   const play = (device_id, auth, uri) => {
     fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
       method: 'PUT',
@@ -30,6 +31,7 @@ const Spotiphy = ({ song, access_token, refresh_token }) => {
 
   const loadPlayer = () => {
     window.onSpotifyWebPlaybackSDKReady = () => {
+      // eslint-disable-next-line no-undef
       const player = new Spotify.Player({ // WHAT IS THIS DOING?
         name: 'Web Playback SDK Quick Start Player',
         getOAuthToken: (cb) => { cb(auth); },
@@ -88,6 +90,7 @@ const Spotiphy = ({ song, access_token, refresh_token }) => {
   };
 
   const rewind = () => {
+    // eslint-disable-next-line no-nested-ternary
     position = (position > 0) ? ((position >= 30000) ? position -= 30000 : 0) : 0;
     axios.put(`https://api.spotify.com/v1/me/player/seek?device_id=${device}`, {}, {
       params: {

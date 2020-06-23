@@ -28,5 +28,6 @@ module.exports = {
     'react/prop-types': 0,
     'react/button-has-type': 0,
     'no-cond-assign': 0,
+    'no-plusplus': 0,
   },
 };

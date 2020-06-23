@@ -4,12 +4,11 @@ const path = require('path');
 const app = express();
 const axios = require('axios');
 
-const config = require('../config');
-const { id, secret, redirect } = config;
-
+// eslint-disable-next-line import/no-extraneous-dependencies
 const request = require('request'); // "Request" library
 const querystring = require('querystring'); // note #1
 const cookieParser = require('cookie-parser');
+const { id, secret, redirect } = require('../config');
 
 const client_id = id; // Your client id
 const client_secret = secret; // Your secret
@@ -42,13 +41,14 @@ router.get('/searchArtist', (req, res) => {
     },
   })
     .then((data) => res.send(data.data.artists.items.slice(0, 3)))
-    .catch((err) => {
+    .catch(() => {
       console.error('An error occured');
       res.send(400);
     });
 });
 
 router.get('/loadTracks', (req, res) => {
+  // eslint-disable-next-line no-shadow
   const { id, access_token } = req.query;
 
   axios.get(`https://api.spotify.com/v1/artists/${id}/top-tracks`, {
@@ -117,6 +117,7 @@ router.get('/callback', (req, res) => {
         grant_type: 'authorization_code',
       },
       headers: {
+        // eslint-disable-next-line no-buffer-constructor
         Authorization: `Basic ${new Buffer(`${client_id}:${client_secret}`).toString('base64')}`,
       },
       json: true,
@@ -126,12 +127,6 @@ router.get('/callback', (req, res) => {
       if (!error && response.statusCode === 200) {
         const { access_token } = body;
         const { refresh_token } = body;
-
-        const options = {
-          url: 'https://api.spotify.com/v1/me',
-          headers: { Authorization: `Bearer ${access_token}` },
-          json: true,
-        };
 
         // we can now pass the token to the browser to make requests from there
         res.redirect(`/#${
