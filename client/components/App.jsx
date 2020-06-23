@@ -26,6 +26,7 @@ const App = () => {
   const [results, setResults] = useState([]);
   const [uri, setUri] = useState('spotify:track:12b3bKEbdjtL1Ga0n3ybzK');
 
+  // Retrieve access_token and refresh_token from the URL
   const getHashParams = () => {
     const hashParams = {};
     let e; const r = /([^&;=]+)=?([^&;]*)/g;
@@ -40,6 +41,17 @@ const App = () => {
   const {
     access_token, refresh_token, login,
   } = params;
+
+  setInterval(() => {
+    axios.get('/refresh_token', {
+      params: {
+        refresh_token,
+      },
+    })
+      .then((response) => {
+        const { access_token } = response.data;
+      });
+  }, 3570000);
 
   const loadFile = () => {
     const file = document.getElementById('file').files[0];

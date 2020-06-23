@@ -1,3 +1,5 @@
+/* eslint-disable no-buffer-constructor */
+/* eslint-disable prefer-template */
 const express = require('express');
 const path = require('path');
 
@@ -143,4 +145,27 @@ router.get('/callback', (req, res) => {
       }
     });
   }
+});
+
+router.get('/refresh_token', (req, res) => {
+  // requesting access token from refresh token
+  const { refresh_token } = req.query;
+  const authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: { Authorization: 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+    form: {
+      grant_type: 'refresh_token',
+      refresh_token,
+    },
+    json: true,
+  };
+
+  request.post(authOptions, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      const { access_token } = body;
+      res.send({
+        access_token,
+      });
+    }
+  });
 });

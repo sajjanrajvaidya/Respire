@@ -4,8 +4,6 @@ import Script from 'react-load-script'; // HELPS CREATE A SCRIPT TAG ONTO INDEX.
 import axios from 'axios';
 import { ButtonsDock, FullSongMessage } from './styled-components.jsx';
 
-// const { auth } = require('../../config.js');
-
 let songUri = 'spotify:track:12b3bKEbdjtL1Ga0n3ybzK';
 let device = '';
 let position = null;
@@ -49,7 +47,7 @@ const Spotiphy = ({ song, access_token, refresh_token }) => {
 
       // Ready
       player.addListener('ready', ({ device_id }) => { // addListener returns an object
-        console.log('Ready with Device ID', device_id);
+        console.log('Device ready');
         device = device_id;
       });
 
@@ -116,7 +114,7 @@ const Spotiphy = ({ song, access_token, refresh_token }) => {
         <FullSongMessage id="full-song-message">Play Full Track</FullSongMessage>
         <button onClick={playSong}>Play</button>
         <button onClick={pauseSong}>Pause</button>
-        <button onClick={seek}>Seek Forward</button>
+        <button onClick={seek}>Forward</button>
         <button onClick={rewind}>Rewind</button>
       </ButtonsDock>
     </>
