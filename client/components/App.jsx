@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 // LEGEND: ??? = explore further
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import {
   GlobalStyle, Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker, RefHeader,
@@ -60,13 +60,13 @@ const App = () => {
   };
 
   const loadSong = () => {
-    audioRef.load();
+    if (audioRef.load) {
+      audioRef.load();
+    }
   };
 
   const download = (e) => {
     const canvas = document.getElementById('waveform');
-    // var png = image.toDataURL("image/png");
-    // document.write('<img src="' + png + '"/>');
     canvas.toBlob((blob) => { // NATIVE HTML5
       const URLObj = window.URL || window.webkitURL;
       const a = document.createElement('a');
@@ -112,10 +112,6 @@ const App = () => {
       })
       .catch((err) => console.error('An error occured', err)); // remove err
   };
-
-  useEffect(() => {
-    // drawAudio(song, audioContext);
-  }, []);
 
   return (
     (!login) ? (<a href="/login">LOGIN TO SPOTIFY</a>)
