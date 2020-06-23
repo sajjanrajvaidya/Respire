@@ -1,4 +1,3 @@
-import React from 'react';
 import styles, { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
