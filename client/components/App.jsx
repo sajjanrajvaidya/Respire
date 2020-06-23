@@ -36,7 +36,7 @@ const App = () => {
 
   const params = getHashParams();
   const {
-    access_token, refresh_token, login, error,
+    access_token, refresh_token, login,
   } = params;
 
   const drawAudio = (url) => {
@@ -45,8 +45,9 @@ const App = () => {
     fetch(url)
       .then((response) => response.arrayBuffer())
       .then((arrayBuffer) => audioContext.decodeAudioData(arrayBuffer))
+      // eslint-disable-next-line no-use-before-define
       .then((audioBuffer) => draw(normalizeData(filterData(audioBuffer))))
-      .catch((err) => {
+      .catch(() => {
         console.error('An error occured');
       });
   };
