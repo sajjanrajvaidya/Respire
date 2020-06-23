@@ -1,5 +1,7 @@
 # FUTURE BUILDS:
 
-1. Dynamic Resume
-2. Auto-token generation
-3. Cross DOM player synchronization
+### Interactivity:
+1. Cross DOM player synchronization
+
+### Authentication:
+1. Session-based login-bypass

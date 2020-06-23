@@ -68,7 +68,9 @@ router.get('/loadTracks', (req, res) => {
     });
 });
 
-const generateRandomString = function (length) {
+// <<  AUTHENTICATION SECTION >>//
+
+const generateRandomString = (length) => {
   let text = '';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 

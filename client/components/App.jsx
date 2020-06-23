@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {
-  GlobalStyle, Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker, RefHeader,
+  GlobalStyle, Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker, RefHeader, LoginBtn
 } from './styled-components.jsx';
 import { drawAudio } from './Visualize.jsx';
 import Search from './Search.jsx';
@@ -126,7 +126,7 @@ const App = () => {
   };
 
   return (
-    (!login) ? (<a href="/login">LOGIN TO SPOTIFY</a>)
+    (!login) ? (<a href="/login"><LoginBtn>LOG INTO SPOTIFY</LoginBtn></a>)
       : (
         <>
           <GlobalStyle />
