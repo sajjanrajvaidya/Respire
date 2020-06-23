@@ -4,13 +4,15 @@ import Script from 'react-load-script'; // HELPS CREATE A SCRIPT TAG ONTO INDEX.
 import axios from 'axios';
 import { ButtonsDock, FullSongMessage } from './styled-components.jsx';
 
-const { auth } = require('../../config.js');
+// const { auth } = require('../../config.js');
 
 let songUri = 'spotify:track:12b3bKEbdjtL1Ga0n3ybzK';
 let device = '';
 let position = null;
 
-const Spotiphy = ({ song }) => {
+const Spotiphy = ({ song, access_token, refresh_token }) => {
+  const auth = access_token;
+
   if (song !== undefined) {
     songUri = song;
   }
@@ -102,12 +104,10 @@ const Spotiphy = ({ song }) => {
     <>
       <Script
         url="https://sdk.scdn.co/spotify-player.js"
-        onCreate={() => console.log('Script tag created')}
+        // onCreate={() => console.log('Script tag created')}
         onLoad={loadPlayer}
         onError={(err) => console.error('Could not connect to Spotify', err)}
       />
-
-      <a href="/login">LOG IN</a>
 
       <ButtonsDock>
         <FullSongMessage id="full-song-message">Play Full Track</FullSongMessage>

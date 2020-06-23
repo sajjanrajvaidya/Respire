@@ -24,6 +24,21 @@ const App = () => {
   const [results, setResults] = useState([]);
   const [uri, setUri] = useState('spotify:track:12b3bKEbdjtL1Ga0n3ybzK');
 
+  const getHashParams = () => {
+    const hashParams = {};
+    let e; const r = /([^&;=]+)=?([^&;]*)/g;
+    const q = window.location.hash.substring(1);
+    while (e = r.exec(q)) {
+      hashParams[e[1]] = decodeURIComponent(e[2]);
+    }
+    return hashParams;
+  };
+
+  const params = getHashParams();
+  const {
+    access_token, refresh_token, login, error,
+  } = params;
+
   const drawAudio = (url) => {
     // HAVE TO USE FETCH IN THIS CASE
     // Using axios requires defining content-type and stringifying the data
@@ -143,6 +158,7 @@ const App = () => {
     axios.get('/searchArtist', {
       params: {
         name: artist,
+        access_token,
       },
     })
       .then((data) => {
@@ -157,6 +173,7 @@ const App = () => {
     axios.get('/loadTracks', {
       params: {
         id: artistId,
+        access_token,
       },
     })
       .then((res) => {
@@ -169,23 +186,6 @@ const App = () => {
   useEffect(() => {
     drawAudio(song);
   }, []);
-
-  const getHashParams = () => {
-    const hashParams = {};
-    let e; const r = /([^&;=]+)=?([^&;]*)/g;
-    const q = window.location.hash.substring(1);
-    while (e = r.exec(q)) {
-      hashParams[e[1]] = decodeURIComponent(e[2]);
-    }
-    return hashParams;
-  };
-
-  const params = getHashParams();
-  const {
-    access_token, refresh_token, login, error,
-  } = params;
-
-  // console.log(params);
 
   return (
     (!login) ? (<a href="/login">LOGIN TO SPOTIFY</a>)
@@ -215,7 +215,7 @@ const App = () => {
           <Search searchArtist={searchArtist} />
           {(showResults) ? <Results results={results} loadTracks={loadTracks} /> : ''}
           {(showContent) ? <Content tracks={content} setUri={setUri} /> : ''}
-          <Spotiphy id="spotiphy" song={uri} />
+          <Spotiphy id="spotiphy" song={uri} access_token={access_token} refresh_token={refresh_token}/>
         </>
       )
   );

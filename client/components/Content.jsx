@@ -18,7 +18,6 @@ const Content = (props) => {
       <Focus>Now Playing <Highlight>{highlight}</Highlight></Focus>
       <Tracklist>
       {tracks.map((track) => {
-          console.log(track);
           return <><ResultListItem key={track.id} style={{cursor: 'pointer'}} onClick={()=>{loadSong(track); setUri(track.uri)}}>{track.name}</ResultListItem><br/></>;
       })}
       </Tracklist>

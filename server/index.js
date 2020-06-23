@@ -3,10 +3,10 @@ const path = require('path');
 
 const app = express();
 const axios = require('axios');
-const config = require('../config');
 
+const config = require('../config');
 const { id, secret, redirect } = config;
-//
+
 const request = require('request'); // "Request" library
 const querystring = require('querystring'); // note #1
 const cookieParser = require('cookie-parser');
@@ -30,12 +30,11 @@ app
   });
 
 router.get('/searchArtist', (req, res) => {
-  const { name } = req.query;
+  const { name, access_token } = req.query;
 
-  // AN AXIOS REQUEST WITH HEADERS AND PARAMS
   axios.get('https://api.spotify.com/v1/search', {
     headers: {
-      Authorization: `Bearer ${config.auth}`,
+      Authorization: `Bearer ${access_token}`,
     },
     params: {
       q: name,
@@ -50,11 +49,11 @@ router.get('/searchArtist', (req, res) => {
 });
 
 router.get('/loadTracks', (req, res) => {
-  const { id } = req.query;
+  const { id, access_token } = req.query;
 
   axios.get(`https://api.spotify.com/v1/artists/${id}/top-tracks`, {
     headers: {
-      Authorization: `Bearer ${config.auth}`,
+      Authorization: `Bearer ${access_token}`,
     },
     params: {
       country: 'US',
@@ -84,7 +83,7 @@ router.get('/login', (req, res) => {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  const scope = 'user-read-private user-read-email';
+  const scope = 'streaming user-read-private user-read-email';
   res.redirect(`https://accounts.spotify.com/authorize?${
     querystring.stringify({
       response_type: 'code',
@@ -102,8 +101,6 @@ router.get('/callback', (req, res) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
   const storedState = req.cookies ? req.cookies[stateKey] : null;
-
-  console.log('COOKIES: ', req.cookies, state);
 
   if (state === null || state !== storedState) {
     res.redirect(`/#${
@@ -136,12 +133,7 @@ router.get('/callback', (req, res) => {
           json: true,
         };
 
-        // use the access token to access the Spotify Web API
-        request.get(options, (error, response, body) => {
-          console.log(body);
-        });
-
-        // we can also pass the token to the browser to make requests from there
+        // we can now pass the token to the browser to make requests from there
         res.redirect(`/#${
           querystring.stringify({
             access_token,

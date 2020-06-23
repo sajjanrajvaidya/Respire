@@ -6,7 +6,6 @@ const Audio = ({ file }) => {
 
   useEffect(() => {
     setSong(file);
-    console.log('Hey!', file);
   }, [file]);
 
   return (
