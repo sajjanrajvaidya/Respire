@@ -1,8 +1,12 @@
+/* eslint-disable jsx-a11y/alt-text */
 // LEGEND: ??? = explore further
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { GlobalStyle, Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker, RefHeader } from './styled-components.jsx';
+import {
+  GlobalStyle, Waveform, File, Form, PlayerDiv, Audio, Line, Download, CanvasBG, RenderBtn, FilePicker, RefHeader, LoginBtn
+} from './styled-components.jsx';
+import { drawAudio } from './Visualize.jsx';
 import Search from './Search.jsx';
 import Results from './Results.jsx';
 import Content from './Content.jsx';
@@ -11,9 +15,9 @@ import Spotiphy from './Spotiphy.jsx';
 const App = () => {
   window.AudioContext = window.AudioContext || window.webkitAudioContext; // webkit for safari compatibility
   const audioContext = new AudioContext();
-  // let currentBuffer = null;
 
-  const [song, setSong] = React.useState('./samples/sleepless.mp3');
+  const [init, setInit] = useState(true);
+  const [song, setSong] = useState('./samples/sleepless.mp3');
   const [urlInput, setUrlinput] = useState('');
   const [audioRef, setAudioref] = useState('');
   const [showResults, setShowResults] = useState(false);
@@ -22,78 +26,32 @@ const App = () => {
   const [results, setResults] = useState([]);
   const [uri, setUri] = useState('spotify:track:12b3bKEbdjtL1Ga0n3ybzK');
 
-  const drawAudio = (url) => {
-    // HAVE TO USE FETCH IN THIS CASE
-    // Using axios requires defining content-type and stringifying the data
-    fetch(url)
-      .then(response => response.arrayBuffer())
-      .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-      .then(audioBuffer => draw(normalizeData(filterData(audioBuffer))))
-      .catch((err) => {
-        console.error('An error occured');
-      })
-  };
-
-  const filterData = (audioBuffer) => {
-    const rawData = audioBuffer.getChannelData(0); // flatten audio to 1 channel
-    const samples = 10000; // desired number of samples in final data set
-    const blockSize = Math.floor(rawData.length / samples); // number of samples in each sub-division
-    const filteredData = [];
-    for (let i = 0; i < samples; i++) {
-      let blockStart = blockSize * i; // The location of the first sample in the block
-      let sum = 0;
-      for (let j = 0; j < blockSize; j++) {
-        sum += Math.abs(rawData[blockStart + j]); // sum of all the samples in the block
-      }
-      filteredData.push(sum / blockSize); // to get average for size of each data in sample
-    };
-    return filteredData;
-  }
-
-  //<< NORMALIZE THE DATA TO ADDRESS SMALL DATA POINTS >>//
-  /*  Change the scale of the data so that the loudest samples measure as 1 */
-  const normalizeData = (filteredData) => {
-    const multiplier = Math.pow(Math.max(...filteredData), -1);
-    return filteredData.map(n => n * multiplier); // e.g. Max = 100, multiplier = 0.1; result = 1 i.e. scale all data according to the max value
-  };
-
-  //<< DRAW THE LINES BASED ON OUR DATA >>//
-  const draw = normalizeData => {
-    const canvas = document.getElementById("waveform"); // Allows to draw graphics into HTML <canvas> element
-    const dpr = window.devicePixelRatio || 1; // check's browser's pixel ratio (basically screen resolution) to draw according to size
-    const padding = 20;
-    canvas.width = canvas.offsetWidth * dpr;
-    canvas.height = (canvas.offsetHeight + padding * 2) * dpr; // ???
-    const ctx = canvas.getContext("2d");
-    ctx.scale(dpr, dpr); // ???
-    ctx.translate(0, canvas.offsetHeight / 2 + padding); // Set Y = 0 to be in the middle of the canvas
-
-    // DRAW THE LINE SEGMENTS
-    const width = canvas.offsetWidth / normalizeData.length; // how wide each segment is
-    for (let i = 0; i < normalizeData.length; i++) {
-      const x = width * i;
-      let height = normalizeData[i] * canvas.offsetHeight - padding;
-      if (height < 0) {
-        height = 0;
-      } else if (height > canvas.offsetHeight / 2) {
-        height = height > canvas.offsetHeight / 2; // may need change
-      }
-      drawLineSegment(ctx, x, height, width, (i + 1) % 2);
+  // Retrieve access_token and refresh_token from the URL
+  const getHashParams = () => {
+    const hashParams = {};
+    let e; const r = /([^&;=]+)=?([^&;]*)/g;
+    const q = window.location.hash.substring(1);
+    while (e = r.exec(q)) {
+      hashParams[e[1]] = decodeURIComponent(e[2]);
     }
+    return hashParams;
   };
 
-  const drawLineSegment = (ctx, x, height, width, isEven) => {
-    ctx.lineWidth = 1; // thickness of line
-    ctx.strokeStyle = '#2b6d67'; // color of line
-    ctx.beginPath();
-    height = isEven? height: -height; // ???
-                       // keep me mind the negative value of y
-    ctx.moveTo(x, 0); // moveTo move without drawing
-    ctx.lineTo(x, height); // lineTo move while drawing
-    ctx.arc(x + width / 2, height, width / 2, Math.PI, 0, isEven); // ???
-    ctx.lineTo(x + width, 0);
-    ctx.stroke();
-  };
+  const params = getHashParams();
+  const {
+    access_token, refresh_token, login,
+  } = params;
+
+  setInterval(() => {
+    axios.get('/refresh_token', {
+      params: {
+        refresh_token,
+      },
+    })
+      .then((response) => {
+        const { access_token } = response.data;
+      });
+  }, 3570000);
 
   const loadFile = () => {
     const file = document.getElementById('file').files[0];
@@ -114,26 +72,27 @@ const App = () => {
   };
 
   const loadSong = () => {
-    audioRef.load();
+    if (audioRef.load) {
+      audioRef.load();
+    }
   };
 
   const download = (e) => {
-    var canvas = document.getElementById('waveform');
-    // var png = image.toDataURL("image/png");
-    // document.write('<img src="' + png + '"/>');
+    const canvas = document.getElementById('waveform');
     canvas.toBlob((blob) => { // NATIVE HTML5
-      let URLObj = window.URL || window.webkitURL;
-      let a = document.createElement("a");
+      const URLObj = window.URL || window.webkitURL;
+      const a = document.createElement('a');
       a.href = URLObj.createObjectURL(blob);
-      a.download = "download.png"; // FILENAME TO BE USED
+      a.download = 'download.png'; // FILENAME TO BE USED
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-    })
+    });
   };
 
   const render = () => {
-    drawAudio(song);
+    drawAudio(song, audioContext);
+    setInit(false);
     loadSong();
   };
 
@@ -141,62 +100,68 @@ const App = () => {
     axios.get('/searchArtist', {
       params: {
         name: artist,
-      }
+        access_token,
+      },
     })
-    .then(data => {
-      setResults(data.data);
-      setShowResults(true);
-    })
-    .catch(err => console.error('An error occured'));
-  }
+      .then((data) => {
+        setResults(data.data);
+        setShowResults(true);
+      })
+      .catch((err) => console.error('An error occured'));
+  };
 
   const loadTracks = (artistId) => {
     setShowResults(false);
     axios.get('/loadTracks', {
       params: {
         id: artistId,
-      }
+        access_token,
+      },
     })
-    .then(res => {
-      setContent(res.data.tracks);
-      setShowContent(true);
-    })
-    .catch(err => console.error('An error occured', err)); // remove err
+      .then((res) => {
+        setContent(res.data.tracks);
+        setShowContent(true);
+      })
+      .catch((err) => console.error('An error occured', err)); // remove err
   };
 
-  useEffect(() => {
-    drawAudio(song);
-  }, []);
-
-    return (
-      <>
-      <GlobalStyle />
-        <FilePicker>
-            <File type="file" id="file" accept="audio/*" onChange={loadFile} onSubmit={urlSubmit}></File>
-        </FilePicker>
+  return (
+    (!login) ? (<a href="/login"><LoginBtn>LOG INTO SPOTIFY</LoginBtn></a>)
+      : (
+        <>
+          <GlobalStyle />
+          <FilePicker>
+            <File type="file" id="file" accept="audio/*" onChange={loadFile} onSubmit={urlSubmit} />
+          </FilePicker>
           <Form onChange={urlChange} onSubmit={urlSubmit}>
             URL to Audio File&nbsp;
-            <File type="text" id="url"></File>
+            <File type="text" id="url" />
             <RenderBtn onClick={render}>RENDER</RenderBtn>
           </Form>
-        <CanvasBG id="canvas">
-          <Waveform id="waveform"></Waveform>
-        </CanvasBG>
-        <Line>
-        <Download onClick={download}>Download Snapshot</Download>
-          <PlayerDiv>
-            <Audio controls ref={(ref) => {setAudioref(ref)}}>
-              <source src={song}></source>
-            </Audio>
-          </PlayerDiv>
-        </Line>
-        <RefHeader>REFERENCE</RefHeader>
-        <Search searchArtist={searchArtist}/>
-        {(showResults)? <Results results={results} loadTracks={loadTracks}/> :''}
-        {(showContent)? <Content tracks={content} setUri={setUri}/>:''}
-        <Spotiphy id="spotiphy" song={uri} />
-      </>
-    );
-}
+          {(init) ? (<img src="dummy-wave.png" style={{ padding: '0.45rem 1rem .1rem 1rem' }} />)
+            : (
+              <CanvasBG id="canvas">
+                <Waveform id="waveform" />
+              </CanvasBG>
+            )}
+          <Line>
+            <Download onClick={download}>Download Snapshot</Download>
+            <PlayerDiv>
+              {(init) ? <Audio controls /> : (
+                <Audio controls ref={(ref) => { setAudioref(ref); }}>
+                  <source src={song} />
+                </Audio>
+              )}
+            </PlayerDiv>
+          </Line>
+          <RefHeader>REFERENCE</RefHeader>
+          <Search searchArtist={searchArtist} />
+          {(showResults) ? <Results results={results} loadTracks={loadTracks} /> : ''}
+          {(showContent) ? <Content tracks={content} setUri={setUri} /> : ''}
+          <Spotiphy id="spotiphy" song={uri} access_token={access_token} refresh_token={refresh_token} />
+        </>
+      )
+  );
+};
 
 export default App;

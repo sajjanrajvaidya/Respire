@@ -1,6 +1,7 @@
 # RESPIRE
 Music referencing app with an audio waveform analyzer and Spotify SDK integration
 
+=======
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes
 
@@ -34,8 +35,8 @@ Stream reference tracks from Spotify for referencing your mix or master track
 
 #### Future Builds:
 * Dynamic Resume
-* Auto-token generation
 * Cross DOM player synchronization
+* Session-based login-bypass
 
 ## Author
 [sajjanrajvaidya](https://github.com/sajjanrajvaidya)

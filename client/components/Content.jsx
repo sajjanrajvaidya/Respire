@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
-import { Line, Preview, PreviewAudio, Tracklist, Highlight, Focus, ResultListItem } from './styled-components.jsx';
+import React, { useState } from 'react';
+import {
+  Preview, PreviewAudio, Tracklist, Highlight, Focus, ResultListItem,
+} from './styled-components.jsx';
 
 const Content = (props) => {
   const { tracks, setUri } = props;
@@ -10,23 +12,28 @@ const Content = (props) => {
   const loadSong = (track) => {
     setSong(track.preview_url);
     audioRef.load();
-    setHighlight(track.name)
+    setHighlight(track.name);
   };
 
   return (
     <>
-      <Focus>Now Playing <Highlight>{highlight}</Highlight></Focus>
+      <Focus>
+        Now Playing
+        <Highlight>{highlight}</Highlight>
+      </Focus>
       <Tracklist>
-      {tracks.map((track) => {
-          console.log(track);
-          return <><ResultListItem key={track.id} style={{cursor: 'pointer'}} onClick={()=>{loadSong(track); setUri(track.uri)}}>{track.name}</ResultListItem><br/></>;
-      })}
+        {tracks.map((track) => (
+          <>
+            <ResultListItem key={track.id} style={{ cursor: 'pointer' }} onClick={() => { loadSong(track); setUri(track.uri); }}>{track.name}</ResultListItem>
+            <br />
+          </>
+        ))}
       </Tracklist>
-        <Preview>
-          <PreviewAudio controls ref={(ref) => {setAudioref(ref)}}>
-            <source src={song}></source>
-          </PreviewAudio>
-        </Preview>
+      <Preview>
+        <PreviewAudio controls ref={(ref) => { setAudioref(ref); }}>
+          <source src={song} />
+        </PreviewAudio>
+      </Preview>
     </>
   );
 };

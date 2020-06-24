@@ -1,4 +1,3 @@
-import React from 'react';
 import styles, { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
@@ -135,4 +134,13 @@ export const ResultListItem = styles.div`
     font-size: 1.5rem;
     font-weight: 700;
   }
+`;
+
+export const LoginBtn = styles.button`
+  padding: .5rem .5rem;
+  margin: 0rem 1rem;
+  cursor: pointer;
+  border-radius: 1.25rem;
+  border: none;
+  background: #8bc34a;
 `;
