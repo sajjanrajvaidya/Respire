@@ -5,12 +5,14 @@ const path = require('path');
 
 const app = express();
 const axios = require('axios');
+require('dotenv').config();
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 const request = require('request'); // "Request" library
 const querystring = require('querystring'); // note #1
 const cookieParser = require('cookie-parser');
-const { id, secret, redirect } = require('../config');
+const redirect = 'http://localhost:8080/callback';
+const { id, secret } = process.env;
 
 const client_id = id; // Your client id
 const client_secret = secret; // Your secret

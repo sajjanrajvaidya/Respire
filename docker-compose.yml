@@ -3,7 +3,7 @@ version: "3.7"
 services:
   app:
     build: .
-    image: respire_v1
+    image: respire_v1.0.0
     command: sh -c "npm start"
     ports:
       - 8080:8080

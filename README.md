@@ -12,6 +12,9 @@ npm install
 
 ### Running
 
+#### Environment Variables
+Set environment variables 'id' (Spotify client ID) and 'secret' (Spotify client secret)
+
 #### With Docker
 ```
 docker-compose up -d
