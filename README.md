@@ -11,6 +11,13 @@ npm install
 ```
 
 ### Running
+
+#### With Docker
+```
+docker-compose up -d
+```
+
+#### Without Docker
 ```
 npm run build
 npm start
