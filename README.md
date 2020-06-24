@@ -1,7 +1,6 @@
 # RESPIRE
 Music referencing app with an audio waveform analyzer and Spotify SDK integration
 
-=======
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes
 
