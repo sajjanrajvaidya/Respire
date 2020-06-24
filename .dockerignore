@@ -2,8 +2,8 @@ node_modules
 npm-debug.log
 
 # ignore .git and .cache folders
-**/.git
+.git
 .cache
 
 # ignore config.js
-**/config.js
+config.js
