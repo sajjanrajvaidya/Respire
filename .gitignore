@@ -107,3 +107,4 @@ dist
 config.js
 SDKTest.js
 test.html
+*.env
