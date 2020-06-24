@@ -41,9 +41,7 @@ Stream reference tracks from Spotify for referencing your mix or master track
 * [Webpack](https://webpack.js.org/) - Client-side bundling
 
 #### Future Builds:
-* Dynamic Resume
 * Cross DOM player synchronization
-* Session-based login-bypass
 
 ## Author
 [sajjanrajvaidya](https://github.com/sajjanrajvaidya)
