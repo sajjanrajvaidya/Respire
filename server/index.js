@@ -11,8 +11,7 @@ require('dotenv').config();
 const request = require('request'); // "Request" library
 const querystring = require('querystring'); // note #1
 const cookieParser = require('cookie-parser');
-const redirect = 'http://localhost:8080/callback';
-const { id, secret } = process.env;
+const { id, secret, redirect } = process.env;
 
 const client_id = id; // Your client id
 const client_secret = secret; // Your secret
