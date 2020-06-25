@@ -12,6 +12,8 @@ npm install
 ### Running
 
 #### With Docker
+
+Note: Please set the appropriate environment variables first
 ```
 docker-compose up -d
 ```
