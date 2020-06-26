@@ -31,6 +31,10 @@ app
     console.log(`Server is listening on port: ${port}`);
   });
 
+router.get('/test', (req, res) => {
+	res.send('Enter some endpoint foo!');
+});
+
 router.get('/searchArtist', (req, res) => {
   const { name, access_token } = req.query;
 
